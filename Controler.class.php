@@ -40,6 +40,10 @@ class Controler
 				$this->isAuth();
 				$this->ajouterBouteilleCellier();
 				break;
+			/*case 'getListeTypeVin':
+				$this->isAuth();
+				$this->getListeTypeVin();
+			break;*/
 			case 'boireBouteilleCellier':
 				$this->isAuth();
 				$this->boireBouteilleCellier();
@@ -132,10 +136,21 @@ class Controler
 				$this->isAuth();
 				$this->getNombreNouveauUsagers();
 				break;
+<<<<<<< HEAD
 			case 'getStatistiques':
 				$this->isAuth();
 				$this->getStatistiques(isset($_GET['intervalle']) ? $_GET['intervalle'] : '');
 				break;
+=======
+			case 'getNombreNouveauUsagers':
+				 $this->isAuth();
+				 $this->getNombreNouveauUsagers();
+			break;
+            case 'getStatistiques':
+				 $this->isAuth();
+				 $this->getStatistiques(isset($_GET['intervalle']) ? $_GET['intervalle'] : '');
+			break;
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 			default:
 				$this->authentification();
 				break;
@@ -180,7 +195,11 @@ class Controler
 		include("vues/cellier.php");
 		include("vues/pied.php");
 	}
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 	private function listeBouteille()
 	{
 		$bte = new Bouteille();
@@ -216,6 +235,24 @@ class Controler
 			include("vues/pied.php");
 		}
 	}
+	
+	
+	private function ajouterBouteilleNonListee($id_utilisateur){
+		$bte = new Bouteille();
+		$body = json_decode(file_get_contents('php://input'));
+		$data2 = $bte->ajoutBouteilleNonListee($body->nom,
+												$body->url_img,
+												$body->pays,
+												$body->description,
+												$body->prix_saq,
+												$body->format,
+												$body->id_type,
+												$id_utilisateur);
+		//echo json_encode($data2,true);
+		echo json_decode($data2,true);
+		
+	}
+
 
 
 	private function ajouterBouteilleNonListee($id_utilisateur)
@@ -457,7 +494,7 @@ class Controler
 		include("vues/adminUtilisateur.php");
 		include("vues/pied.php");
 	}
-
+  
 	// Récupération des informations à changer
 	private function getInfosUtilisateur($id_util)
 	{
@@ -477,13 +514,18 @@ class Controler
 		$data = $admin->sqlModificationUtilisateur($id, $nom, $prenom, $identifiant, $activation, $id_type);
 
 		return $data;
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 		include("vues/entete.php");
 		include("vues/pied.php");
 	}
 
 	//Fonction pour supprimer un cellier
 	/*private function supprimerUtilisateur($id_util)
+<<<<<<< HEAD
 	{
 		$admin = new Admin();
 
@@ -496,21 +538,35 @@ class Controler
 	}*/
 	//Fonction pour récupérer la liste des celliers 
 	private function getListeCelliers($id_utilisateur)
+=======
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 	{
+		$admin = new Admin();
+
+		if ($id_util != $_SESSION['utilisateur_id']) {
+			$data = $admin->supprimerUtilisateur($id_util);
+			if (!$data) {
+				http_response_code(417);
+			}
+		}
+	}*/
+	//Fonction pour récupérer la liste des celliers 
+    private function getListeCelliers($id_utilisateur) {
 		$bte = new Bouteille();
 		$data = $bte->lireCelliers($id_utilisateur);
 		$data = json_encode($data);
-		if ($_SESSION['utilisateur_type'] == 1) {
+		if ($_SESSION['utilisateur_type'] == 1){
 			$this->accueil($id_utilisateur);
-			exit;
-		} else {
+			exit;    
+		} else{
 			$data = $bte->lireCelliers($id_utilisateur);
 			$data = json_encode($data);
 		}
-
+		
 		include("vues/entete.php");
 		include("vues/ajouter_cellier.php");
 		include("vues/pied.php");
+
 	}
 
 	//Fonction pour ajouter un nouveau cellier 
@@ -538,7 +594,7 @@ class Controler
 			http_response_code(417);
 		}
 	}
-
+  
 	//infos bouteille par id bouteille et id cellier
 	private function getInfosBouteille($id_bouteille, $id_cellier)
 	{
@@ -556,7 +612,7 @@ class Controler
 			include("vues/pied.php");
 		}
 	}
-
+  
 	//modification d une bouteille
 	private function modifierBouteilleInfos($id_bouteille, $id_cellier, $date_achat, $garde_jusqua, $notes, $prix, $quantite, $millesime)
 	{
@@ -567,10 +623,16 @@ class Controler
 
 		return $data;
 	}
+<<<<<<< HEAD
 
 	//supprimer une bouteille d'un cellier
 	private function retirerBouteille($id_bouteille, $id_cellier)
 	{
+=======
+  
+	//supprimer une bouteille d'un cellier
+	private function retirerBouteille($id_bouteille,$id_cellier){
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 		//checker si l'utilisateur à le droit de modifier
 		$bte = new Bouteille();
 		$dataRetirerBouteille = $bte->retirerBouteille($id_bouteille, $id_cellier);
@@ -578,18 +640,23 @@ class Controler
 			http_response_code(417);
 		}
 	}
-
+	
 	//statistiques des usagers
 	// fonction qui renvoie le nombre de nouveaux usagers
-	private function getNombreNouveauUsagers()
-	{
+	private function getNombreNouveauUsagers() {
 		$admin = new Admin();
 		$data = $admin->getNombreNouveauUsagers();
 		$data = json_encode($data);
 		$stat = new Statistiques();
+<<<<<<< HEAD
 		$celUsager = $stat->sqlNombreCellierParUsager();
 		$nbUsager = $stat->sqlNombreUsager();
 		$nbCellier = $stat->sqlNombreCellier();
+=======
+		$celUsager=$stat->sqlNombreCellierParUsager();
+		$nbUsager=$stat->sqlNombreUsager();
+		$nbCellier=$stat->sqlNombreCellier();
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 
 		include("vues/entete.php");
 		include("vues/statistiques_utilisateurs.php");
@@ -599,6 +666,7 @@ class Controler
 	//Statistiques des nombre d'usager, nombre de cellier,  nombre de cellier par usager,  nombre de bouteille par cellier et par usager
 	private function getStatistiques($intervalle)
 	{
+<<<<<<< HEAD
 
 		$stat = new Statistiques();
 		$btlCellier = $stat->sqlNombreBouteilleParCellier();
@@ -614,6 +682,23 @@ class Controler
 
 
 		include("vues/entete.php");
+=======
+		
+		$stat = new Statistiques();
+        $btlCellier=$stat->sqlNombreBouteilleParCellier();
+		$btlUsager=$stat->sqlNombreBouteilleParUsager();
+        $btlCellierVal=$stat->sqlValeurBouteilleParCellier();
+		$btlUsagerVal=$stat->sqlValeurBouteilleParUsager();
+        $btlVal=$stat->sqlValeurTotal();
+        
+        
+		$bte = new Bouteille();
+		$dataBouteilles = $bte->getNombreBouteilles($intervalle);
+		$dataBouteilles = json_encode($dataBouteilles);
+
+    
+        include("vues/entete.php");
+>>>>>>> 6828bd1bca6172a2656dbc7aaf8e98d7b2ebdf36
 		include("vues/statistiques.php");
 		include("vues/pied.php");
 	}
