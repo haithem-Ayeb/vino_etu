@@ -89,7 +89,6 @@ class SAQ extends Modele
 		foreach ($children as $child) {
 			$innerHTML .= $child->ownerDocument->saveXML($child);
 		}
-
 		return $innerHTML;
 	}
 
@@ -100,13 +99,11 @@ class SAQ extends Modele
 
 	private function recupereInfo($noeud)
 	{
-
 		$info = new stdClass();
 		$items = $noeud->getElementsByTagName("img");
 		foreach ($items as $item) {
 			if ($item->getAttribute('class') == 'product-image-photo') {
 				$info->img = $item->getAttribute('src');
-				//var_dump($info->img);
 			}
 		} //TODO : Nettoyer le lien
 
@@ -132,7 +129,6 @@ class SAQ extends Modele
 					$info->desc->format = trim($aDesc[1]);
 					$info->desc->pays = trim($aDesc[2]);
 				}
-
 				$info->desc->texte = trim($info->desc->texte);
 			}
 		}
@@ -152,11 +148,9 @@ class SAQ extends Modele
 			if ($node->getAttribute('class') == 'price') {
 				//var_dump($node);
 				$info->prix = trim($node->textContent);
-				
 			}
 		}
 		//var_dump($info);
-
 		return $info;
 	}
 
@@ -167,13 +161,12 @@ class SAQ extends Modele
 		$retour->succes = false;
 		$retour->raison = '';
 
-
 		//$price = substr(($bte -> prix), 0,5);
 		$price = substr(($bte->prix), 0, 5);
 		//str_replace(',', '.', $price);
 		$t = str_replace(',', '.', $price);
 		$a = (float) $t;
-		
+
 		$rows = $this->_db->query("select id from vino__bouteille_type where type = '" . $bte->desc->type . "'");
 
 		if ($rows->num_rows == 1) {

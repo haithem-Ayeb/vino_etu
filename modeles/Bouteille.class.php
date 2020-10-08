@@ -126,10 +126,36 @@ class Bouteille extends Modele
 			"'" . $data->millesime . "')";
 
 		$res = $this->_db->query($requete);
+		if(empty($res)){
+			exit;
+		}else{
+			return $res;
+		}
+		
+	}
+	public function ajoutBouteilleNonListee($nom, $url_img,$pays,$description,$prix_saq,$format,$id_type,$id_utilisateur){
+		//$id_utilisateur = $_SESSION['utilisateur_id'];
 
+		$requete = "INSERT INTO vino__bouteille(nom,url_img,pays,description,prix_saq,format,id_type,id_user) 
+						VALUES (" . "'" . $nom . "'," .
+								"'" . $url_img . "'," .
+								"'" . $pays . "'," .
+								"'" . $description . "'," .
+								"" . $prix_saq . "," .
+								"'" . $format . "'," .
+								"" . $id_type . "," .
+								"" . $id_utilisateur . ")";
+				$nom = $nom ?: null;						
+				$url_img = $url_img ?: null;	
+				$url_img = $_FILES['img']['name'];
+				$pays = $pays ?:null;	
+				$description = $description ?:null;
+				$format = $format ?:null;	
+				
+		
+			$res = $this->_db->query($requete);
 		return $res;
 	}
-
 	/**
 	 * Cette méthode change la quantité d'une bouteille en particulier dans le cellier
 	 * 
@@ -142,6 +168,15 @@ class Bouteille extends Modele
 	{
 		//TODO : Valider les données.
 		$requete = "UPDATE vino__cellier_bouteille SET quantite = GREATEST(quantite + " . $nombre . ", 0) WHERE id_bouteille = " . $id_bouteille . " AND id_cellier = " . $id_cellier;
+		//echo $requete;
+		$res = $this->_db->query($requete);
+		
+		return $res;
+	}
+
+	public function aditionerStatsBouteille($id_bouteille, $nombre, $action)
+	{
+		$requete = "INSERT INTO `vino__bouteilles_stats`(`id_bouteille`, `date_changement`, `actions`, `quantite`) VALUES (" . $id_bouteille . ",NOW()," . $action . "," . $nombre . ")";
 		//echo $requete;
 		$res = $this->_db->query($requete);
 
@@ -252,4 +287,44 @@ class Bouteille extends Modele
 		$res = $this->_db->query($requete);
 		return $res;
 	}
+
+	public function getListeTypeVin(){
+		$requete = "SELECT * FROM vino__bouteille_type ";
+		$res = $this->_db->query($requete);
+		if ($res->num_rows) {
+			while ($row = $res->fetch_assoc()) {
+				$rows[] = $row;
+			}
+		}
+
+		return $rows;
+	}
+	public function getNombreBouteilles($dateFiltre) {
+		$requete = "SELECT date_changement AS dateChang, actions AS actionsBA, count(quantite) AS quantiteBA
+		FROM vino__bouteilles_stats";
+
+		if($dateFiltre == 'jour') {
+			$requete.=" WHERE date_changement BETWEEN NOW() - INTERVAL 1 DAY AND NOW() GROUP BY actions ASC";
+		} else if ($dateFiltre == 'semaine') {
+			$requete.=" WHERE date_changement BETWEEN NOW() - INTERVAL 1 WEEK AND NOW() GROUP BY actions ASC";
+		} else if ($dateFiltre == 'mois') {
+			$requete.=" WHERE date_changement BETWEEN NOW() - INTERVAL 1 MONTH AND NOW() GROUP BY actions ASC";
+		} else if($dateFiltre == 'anneee') {
+			$requete.=" WHERE date_changement BETWEEN NOW() - INTERVAL 1 YEAR AND NOW() GROUP BY actions ASC";
+		} else {
+			$requete.=" GROUP BY actions ASC";
+		}
+	
+        $res = $this->_db->query($requete);
+        if ($res->num_rows) {
+            while ($row = $res->fetch_assoc()) {
+                $rows[] = $row;
+            }
+		}
+		if(isset($rows)) {
+			return $rows;
+		} else {
+			return []; 
+		}
+    }
 }

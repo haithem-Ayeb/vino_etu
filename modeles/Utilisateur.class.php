@@ -13,7 +13,7 @@ class Utilisateur
     private $prenom  = null;
     private $identifiant = null;
     private $mdp  = null;
-
+  
     private $erreurs = array();
 
     // Constructeur de la classe 
@@ -61,7 +61,9 @@ class Utilisateur
         unset($this->erreurs['nom']);
         $nom = trim($nom);
         $regExp = '/^([a-zA-ZàâéèêôùûçÀÂÉÈÔÙÛÇ0-9]{2,25})$/';
+      
         if ($nom !== null && preg_match($regExp, $nom)) {
+
             $this->nom = ucwords(strtolower($nom));
         } else {
             $this->erreurs['nom'] = "Le nom doit comprendre entre 2 et 25 caractères alphabétiques";
@@ -75,6 +77,7 @@ class Utilisateur
         unset($this->erreurs['prenom']);
         $prenom = trim($prenom);
         $regExp = '/^([a-zA-ZàâéèêôùûçÀÂÉÈÔÙÛÇ0-9]{2,25})$/';
+
         if ($prenom !== null && preg_match($regExp, $prenom)) {
             $this->prenom = ucwords(strtolower($prenom));
         } else {

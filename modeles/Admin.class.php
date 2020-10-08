@@ -3,17 +3,16 @@
 /**
  * Class Admin
  * Cette classe possède les fonctions d'administration.
- * 
- * @author Chingiz Taghizade
+ *
  * @version 1.0
  * @update 2020-09-21
  */
 class Admin extends Modele
 {
     // La fonction ajoute un utilisateur admin/usager
-    public function sqlAjouterAdmin($nom, $prenom, $iden, $mdp, $activation, $type)
+    public function sqlAjouterAdmin($nom, $prenom, $iden, $mdp, $activation, $id_type)
     {
-        $requete = "INSERT INTO vino__utilisateur (nom, prenom, identifiant,date_inscription, mdp, activation, id_type) VALUES ('$nom', '$prenom','$iden',NOW(), md5('$mdp'),'$activation', '$type')";
+        $requete = "INSERT INTO vino__utilisateur (nom, prenom, identifiant,date_inscription, mdp, activation, id_type) VALUES ('$nom', '$prenom','$iden',NOW(), md5('$mdp'),'$activation', '$id_type')";
 
         if ($this->_db->query($requete)) {
 
@@ -36,14 +35,13 @@ class Admin extends Modele
     public function getListeUtilisateurs()
     {
         $requete = "SELECT v_c.id, nom, prenom, identifiant, v_c.activation, v_u_t.type FROM vino__utilisateur v_c JOIN vino__utilisateur_type v_u_t ON v_c.id_type = v_u_t.id WHERE v_c.id_type != 3";
-
         $res = $this->_db->query($requete);
+      
         if ($res->num_rows) {
             while ($row = $res->fetch_assoc()) {
                 $rows[] = $row;
             }
         }
-
         return $rows;
     }
 
@@ -75,7 +73,19 @@ class Admin extends Modele
                 $rows[] = $row;
             }
         }
+        return $rows;
+    }
+    // La fonction récupérer la liste des utilisateurs par id
+    public function getListeUtilisateursById($id)
+    {
+        $requete = "SELECT * FROM vino__utilisateur AS  v_u WHERE v_u.id= ".$id;
 
+        $res = $this->_db->query($requete);
+        if ($res->num_rows) {
+            while ($row = $res->fetch_assoc()) {
+                $rows[] = $row;
+            }
+        }
         return $rows;
     }
 }

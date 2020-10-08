@@ -34,9 +34,9 @@ class Authentication extends Modele
     }
 
     // La fonction ajoute un utilisateur
-    public function sqlAjouterUtilisateur($nom, $prenom, $iden, $mdp, $activation, $type)
+    public function sqlAjouterUtilisateur($nom, $prenom, $iden, $mdp, $activation, $id_type)
     {
-        $requete = "INSERT INTO vino__utilisateur (nom, prenom, identifiant, mdp, activation, id_type) VALUES ('$nom', '$prenom','$iden', md5('$mdp'), '$activation', '$type')";
+        $requete = "INSERT INTO vino__utilisateur (nom, prenom, identifiant, mdp, activation, id_type) VALUES ('$nom', '$prenom','$iden', md5('$mdp'), '$activation', '$id_type')";
         $this->_db->query($requete);
 
         return true;
