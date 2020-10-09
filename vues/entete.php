@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 	<title>Un petit verre de vino</title>
 	<meta charset="utf-8">
@@ -14,35 +15,29 @@
 	<script src="js/main.js"></script>
 </head>
 
-		<link rel="stylesheet" href="./css/normalize.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="./css/base_h5bp.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="./css/main.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" />
-		<base href="<?php echo BASEURL; ?>">
-		<!--<script src="./js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>-->
-		<script src="./js/plugins.js"></script>
-		<script src="./js/main.js"></script>
-	</head>
-	<body>
-		<nav class="navbar">
-				<span class="navbar-toggle" id="js-navbar-toggle">
-					<i class="fas fa-bars"></i>
-				</span>
-				<span class="welcome">Bienvenue <?php echo $_SESSION['utilisateur_prenom']; ?> <?php echo $_SESSION['utilisateur_nom']; ?></span>
-				
-				<ul class="main-nav" id="js-menu">
-			<li><a href="?requete=accueil"><img src="img/logo.png" alt="logo"></a></li>
+<body>
+	<nav class="navbar">
+		<span class="navbar-toggle" id="js-navbar-toggle">
+			<i class="fas fa-bars"></i>
+		</span>
+		<span class="welcome">Bienvenue <?php echo $_SESSION['utilisateur_prenom']; ?> <?php echo $_SESSION['utilisateur_nom']; ?></span>
+
+		<ul class="main-nav" id="js-menu">
+			<li><a href="index.php?requete=accueil"><img src="img/logo.png" alt="logo"></a></li>
 			<li class="menu-item">
-				<a href="?requete=accueil">Accueil</a>
+				<a href="index.php?requete=accueil">Accueil</a>
 			</li>
 			<?php if ($_SESSION['utilisateur_type'] == 2) { ?>
 				<li class="menu-item">
-					<a href="?requete=getListeCelliers">Gestion des celliers</a>
+					<a href="index.php?requete=getListeCelliers">Gestion des celliers</a>
 				</li>
 			<?php } ?>
 			<?php if ($_SESSION['utilisateur_type'] == 1 || $_SESSION['utilisateur_type'] == 3) { ?>
-				<li class="menu-item">
-					<a href="index.php?requete=admin">Gestion d'administration</a></li>
+				<li class="menu-item"><a href="#" class="deroulant"><i class="fas fa-chevron-down"></i>Gestion d'administration</a>
+					<ul class="sous">
+						<li><a href="index.php?requete=admin">Gestion des utilisateurs</a></li>
+						<li><a href="index.php?requete=importationMenu">Importation des bouteilles</a></li>
+					</ul>
 				</li>
 			<?php } ?>
 			<?php if ($_SESSION['utilisateur_type'] == 1 || $_SESSION['utilisateur_type'] == 3) { ?>
@@ -64,6 +59,6 @@
 				</a>
 			</li>
 		</ul>
-    	</nav>
+	</nav>
 	<div class="col-2">
 		<main class="content">

@@ -12,7 +12,6 @@ foreach ($arr as $key => $cellier) {
     array_push($arrayP, $cellier['pays']);
     array_push($arrayType, $cellier['type']);
     array_push($arrayUser, $cellier['id_utilisateur']);
-
 }
 foreach ($arrayCelliers as $key => $tousCelliers) {
     array_push($arrayC, $tousCelliers['nom_cellier']);
@@ -23,7 +22,7 @@ $arrayC = array_unique($arrayC);
 
 $id = null;
 $p = null;
-$t=null;
+$t = null;
 ?>
 <section class="cellier">
     <?php if ($_SESSION['utilisateur_type'] == 2) { ?>
@@ -32,50 +31,47 @@ $t=null;
     <nav>
         <ul>
             <li><label for="tri_cellier">Choisir un cellier</label>
-            <select id="cellier" name="tri_cellier" class="tri_cellier"> 
-            <option  selected value="-1"> -- selectionner une option -- </option>
-				<?php foreach ($arrayCelliers as $row) : ?>   
-                <option value="<?php echo $row['id'];?>" 
-            <?php if(isset($_GET['idCellier']) && $_GET['idCellier'] ==  $row['id']) echo"selected" ?> ><?php echo $row['nom_cellier']; ?></option>  
-                <?php endforeach ?>
+                <select id="cellier" name="tri_cellier" class="tri_cellier">
+                    <option selected value="-1"> -- selectionner une option -- </option>
+                    <?php foreach ($arrayCelliers as $row) : ?>
+                        <option value="<?php echo $row['id']; ?>" <?php if (isset($_GET['idCellier']) && $_GET['idCellier'] ==  $row['id']) echo "selected" ?>><?php echo $row['nom_cellier']; ?></option>  
+                    <?php endforeach ?>
                 </select>
             </li>
             <li>
-             <label for="pays">Choisir un pays</label>
-              <select name="pays" id="pays" class="tri_cellier">
-                <option selected value="-1"> -- selectionner une option -- </option>
-                  <?php 
-                    foreach ($arrayP as $pays) { 
-                  ?> 
-                  <option value="<?php echo $pays;?>" 
-                     <?php if(isset($_GET['paysOption']) && $_GET['paysOption'] == $pays) echo"selected" ?> ><?php echo $pays; ?></option> 
-                <?php } ?>
-              </select>
-             </li>
-             <li><label for="tri_cellier">Choisir un type de vin</label>
-              <select id="type" name="type" class="tri_cellier"> 
-                  <option   selected value="-1"> -- selectionner une option -- </option>
-                  <?php 
-                  foreach ($arrayT as $type) { 
-                      ?>
-                  <option value="<?php echo $type;?>" 
-                     <?php if(isset($_GET['typeOption']) && $_GET['typeOption'] == $type) echo"selected" ?> ><?php echo $type; ?></option>  
-                  <?php } ?>
+                <label for="pays">Choisir un pays</label>
+                <select name="pays" id="pays" class="tri_cellier">
+                    <option selected value="-1"> -- selectionner une option -- </option>
+                    <?php
+                    foreach ($arrayP as $pays) {
+                    ?>
+                        <option value="<?php echo $pays; ?>" <?php if (isset($_GET['paysOption']) && $_GET['paysOption'] == $pays) echo "selected" ?>><?php echo $pays; ?></option> 
+                    <?php } ?>
+                </select>
+            </li>
+            <li><label for="tri_cellier">Choisir un type de vin</label>
+                <select id="type" name="type" class="tri_cellier">
+                    <option selected value="-1"> -- selectionner une option -- </option>
+                    <?php
+                    foreach ($arrayT as $type) {
+                    ?>
+                        <option value="<?php echo $type; ?>" <?php if (isset($_GET['typeOption']) && $_GET['typeOption'] == $type) echo "selected" ?>><?php echo $type; ?></option>  
+                    <?php } ?>
                 </select>
             </li>
         </ul>
     </nav>
     <?php
-    foreach ($arr as $cle => $bouteille) {?>
+    foreach ($arr as $cle => $bouteille) { ?>
         <article class="bouteille" data-quantite="">
             <div class="img">
-            <?php if($bouteille['image'] ==null){ 
-                $bouteille['image'] =='..\img\bouteille.png';?>
-                <img src="img/bouteille.png">
-               <?php }else{ ?>
-                <img src="https:<?php echo $bouteille['image'] ?>">
-            <?php }?>
-            
+                <?php if ($bouteille['image'] == null) {
+                    $bouteille['image'] == '..\img\bouteille.png'; ?>
+                    <img src="img/bouteille.png">
+                <?php } else { ?>
+                    <img src="https:<?php echo $bouteille['image'] ?>">
+                <?php } ?>
+
             </div>
             <ul class="infoBouteille">
                 <li class="id_cellier">Numéro du cellier : <?php echo $bouteille['id_cellier'] ?></li>
